@@ -1,0 +1,5 @@
+name: JetPack
+main: me.iceyball.jetpack.JetPack
+version: 0.1
+author: Iceyball
+description: Adds a jetpack to the game!

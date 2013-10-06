@@ -1,0 +1,27 @@
+# Default Configuration File for JetPack
+
+#Recipe for the Jetpack
+Recipe:
+  Top Left: IRON_INGOT
+  Top Center: FURNACE
+  Top Right: IRON_INGOT
+  Middle Left: IRON_INGOT
+  Middle Center: IRON_INGOT
+  Middle Right: IRON_INGOT
+  Bottom Left: BLAZE_ROD
+  Bottom Center: REDSTONE 
+  Bottom Right: BLAZE_ROD
+
+#Fuel to use when recharging.
+Fuel: COAL
+
+#The amount of power each fuel gives the jetpack.
+Power Gained Per Fuel: 10
+
+#The Fuel Capacity. Does not change durability, only uses. A number 0-100 including  decimals.
+Fuel Capacity: 8
+
+Allow fall damage while wearing the jetpack: true
+
+
+  
