@@ -20,27 +20,37 @@ public class RefillListener implements Listener{
     {
         this.plugin = plugin;
     }
-	
+	public static boolean hasArmor(ItemStack item, Material type)
+	{
+	    return (item == null ? false : item.getType() == type);
+	}
 
 	@EventHandler
-	public void onPlayerInteract1(PlayerInteractEvent event){
+	public void onPlayerInteract(PlayerInteractEvent event){
         Player player = event.getPlayer();
-        String name = ChatColor.DARK_RED + "JetPack";
-        short dur = player.getItemInHand().getDurability();
-        
+        short dur4 = player.getItemInHand().getDurability();
+        String name0 = "";
+        if(player.getItemInHand() != null)
+        {
+        if(player.getItemInHand().hasItemMeta())
+        {
+        name0 = player.getItemInHand().getItemMeta().getDisplayName();
+        }
+        }
         if(event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_AIR){
-            	if(player.getItemInHand().getItemMeta().getDisplayName().equals(name))
+        	if(hasArmor(player.getItemInHand(), Material.IRON_CHESTPLATE)){
+            	if(name0.equals(ChatColor.DARK_RED + "JetPack"))
             	{
             		if(player.getInventory().contains(Material.getMaterial(plugin.getConfig().getString("Fuel"))))
             		{
             			if(player.getItemInHand().getDurability() != 0)
             			{
             		player.getInventory().removeItem(new ItemStack[] { new ItemStack(Material.getMaterial(plugin.getConfig().getString("Fuel")), 1) });
-            		player.getItemInHand().setDurability((short) (dur - (plugin.getConfig().getInt("Power Gained Per Fuel"))));
+            		player.getItemInHand().setDurability((short) (dur4 - (plugin.getConfig().getInt("Power Gained Per Fuel"))));
             			}
             	}
             	}
-            	
-            }
-        }
-    }
+        	}
+}
+	}
+}

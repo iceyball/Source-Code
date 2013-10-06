@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -50,47 +51,63 @@ public class FlyListener implements Listener{
 	 
 	@EventHandler
 	public void onFallDamage(EntityDamageEvent event){
-        Player player = (Player) event.getEntity();
-        PlayerInventory inventory = player.getInventory();
         String name = ChatColor.DARK_RED + "JetPack";
-        short dur = inventory.getChestplate().getDurability();
-        if(dur == 239){
-        	inventory.getChestplate().setDurability((short) (dur - 1));
-        }
+        if(event.getEntity() instanceof Player && event.getCause() == DamageCause.FALL)
+        {
+        	Entity entity = event.getEntity();
+    		Player player = (Player) entity;
+            PlayerInventory inventory = player.getInventory();
+        	
+        	if(hasArmorType(inventory.getChestplate(), Material.IRON_CHESTPLATE)){
+        		if(inventory.getChestplate().getItemMeta().getDisplayName().equals(name))
+        		{
+        			if(plugin.getConfig().getBoolean("Allow fall damage while wearing the jetpack")==(true))
+        			{
         
-	        if(event.getEntity() instanceof Player && event.getCause() == DamageCause.FALL)
-	        {
-	        	
-	        	if(hasArmorType(inventory.getChestplate(), Material.IRON_CHESTPLATE)){
-	        		if(inventory.getChestplate().getItemMeta().getDisplayName().equals(name))
-	        		{
-	        			if(plugin.getConfig().getBoolean("Allow fall damage while wearing the jetpack")==(true))
-	        			{
-	        
-	             event.setCancelled(true);
-	        			}
-	    }
-	        		else
-	        		{
-	        		
-	        		}
-	        }
-	        }
+             event.setCancelled(true);
+        			}
+    }
+        		else
+        		{
+        		
+        		}
+        }
+        }
+        if(event.getEntity() instanceof Player)
+        {
+        	Entity entity1 = event.getEntity();
+    		Player player1 = (Player) entity1;
+        	PlayerInventory inventory1 = player1.getInventory();
+        	short dur2 = inventory1.getChestplate().getDurability();
+        if(dur2 == 239 && event.getEntity() instanceof Player ){
+
+        	inventory1.getChestplate().setDurability((short) (dur2 - 1));
+        }
+        }
 	}
 	@EventHandler
 	public void onMove(PlayerMoveEvent event){
     {
 		Player player = event.getPlayer();
-		String name = "";
-        name = ChatColor.DARK_RED + "JetPack";
         World world = player.getWorld();
         final PlayerInventory inventory = player.getInventory();
         Location loc = player.getLocation();
-        short dur = inventory.getChestplate().getDurability();
-        Block b = player.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY() - 1, loc.getBlockZ());
-        	if(inventory.getChestplate().getItemMeta().getDisplayName().equals(name))
+        String name = "";
+        if(inventory.getChestplate() != null)
+        {
+        if(inventory.getChestplate().hasItemMeta() && inventory.getChestplate().getItemMeta() != null)
+        {
+        name = inventory.getChestplate().getItemMeta().getDisplayName();
+        }
+        }
+        if(hasArmorType(inventory.getChestplate(), Material.IRON_CHESTPLATE)){
+        if(name.equals(ChatColor.DARK_RED + "JetPack") && name != null){
+        	Block b;
+        	b = player.getWorld().getBlockAt(loc.getBlockX(), loc.getBlockY() - 1, loc.getBlockZ());
+        	if (b == null) { return; }
         	if(event.getFrom().getY() != event.getTo().getY() && b.getType() == Material.AIR) {
-        		if(dur != 239)
+                short dura = inventory.getChestplate().getDurability();
+        		if(dura != 239)
         		{
         	        if(player.isSneaking())
         	        {
@@ -109,6 +126,8 @@ public class FlyListener implements Listener{
 	}
 	}
 }
+	}
+	}
 }
 
 
